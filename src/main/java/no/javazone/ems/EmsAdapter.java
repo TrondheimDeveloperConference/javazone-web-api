@@ -50,12 +50,12 @@ public class EmsAdapter {
     }
 
     public void check() {
-        WebTarget target = emsWebTarget.path("/ems/server/app-info");
+        WebTarget target = emsWebTarget.path("/server/app-info");
         target.request().buildGet().invoke(String.class);
     }
 
     private List<EventMinimal> getEventUris() {
-        WebTarget eventWebTarget = emsWebTarget.path("/ems/server/events");
+        WebTarget eventWebTarget = emsWebTarget.path("/server/events");
 
         String response = eventWebTarget.request().buildGet().invoke(String.class);
 
