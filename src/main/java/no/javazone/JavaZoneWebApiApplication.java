@@ -1,6 +1,8 @@
 package no.javazone;
 
 import io.dropwizard.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import no.javazone.api.sessions.SessionResource;
@@ -39,7 +41,11 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
 
     @Override
     public void initialize(Bootstrap<JavaZoneWebApiConfiguration> bootstrap) {
-        // nothing to do yet
+        bootstrap.setConfigurationSourceProvider(
+                new SubstitutingSourceProvider(bootstrap.getConfigurationSourceProvider(),
+                        new EnvironmentVariableSubstitutor()
+                )
+        );
     }
 
     @Override
