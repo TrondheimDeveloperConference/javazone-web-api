@@ -51,9 +51,9 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
     @Override
     public void run(
             JavaZoneWebApiConfiguration configuration,
-            Environment environment
-    ) {
+            Environment environment) {
         final URI contextPath = getContextPath();
+        LOG.info("Bruker base url: " + contextPath);
         final PathResolver pathResolver = new PathResolver(contextPath);
 
         final String emsHost = getEmsHost(configuration);
@@ -97,9 +97,7 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
 
     private URI createUriFromString(String contextPath) {
         try {
-            URI uri = new URI(contextPath);
-            LOG.info("Bruker contextPathen " + contextPath);
-            return uri;
+            return new URI(contextPath);
         } catch (URISyntaxException e) {
             String error = "Buggy context path: " + contextPath;
             LOG.error(error);
