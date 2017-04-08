@@ -60,7 +60,9 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
         LOG.info("Bruker EMS-host: " + emsHost);
 
         final EmsAdapter emsAdapter = new EmsAdapter(emsHost);
-        DevNullUriCreator devNullUriCreator = new DevNullUriCreator("https://" + emsHost + "/devnull/server/events");
+        String devNull = getDevNull(configuration);
+        LOG.info("Bruker /devnull/: " + devNull);
+        DevNullUriCreator devNullUriCreator = new DevNullUriCreator(devNull + "/server/events");
 
         SpeakerImageCache speakerImageCache = new SpeakerImageCache();
         final SessionRepository sessionRepository = new SessionRepository(emsAdapter, speakerImageCache);
@@ -78,6 +80,12 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
 
         return Optional.ofNullable(environmentVariables.get("EMS_HOST"))
                 .orElse(configuration.getEmsHost());
+    }
+    private String getDevNull(JavaZoneWebApiConfiguration configuration) {
+        Map<String, String> environmentVariables = System.getenv();
+
+        return Optional.ofNullable(environmentVariables.get("DEVNULL"))
+                .orElse(configuration.getDevNull());
     }
 
     private URI getContextPath() {

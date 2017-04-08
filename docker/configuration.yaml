@@ -7,4 +7,5 @@ server:
     port: 9003
 
 emsHost: ems-app:8081
+devNull: test.javazone.no
 
