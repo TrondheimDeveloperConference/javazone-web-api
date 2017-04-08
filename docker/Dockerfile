@@ -1,5 +1,6 @@
 FROM java:8
 EXPOSE 8083
+EXPOSE 9003
 ADD api/ /
 ADD configuration.yaml /root/
 ENV APP_HOME /root
