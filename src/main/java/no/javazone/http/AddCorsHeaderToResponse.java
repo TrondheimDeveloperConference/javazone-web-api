@@ -16,17 +16,8 @@ public class AddCorsHeaderToResponse implements ContainerResponseFilter {
     public void filter(
             ContainerRequestContext requestContext,
             ContainerResponseContext responseContext)
-            throws IOException
-    {
-        MultivaluedMap<String, String> requestHeaders = requestContext.getHeaders();
-        List<String> originValues = requestHeaders.getOrDefault("Origin", new ArrayList<>());
-
-        if (originValues.size() > 0) {
-            String origin = originValues.get(0);
-            if (erEtJavaZoneSubdomene(origin)) {
-                responseContext.getHeaders().add("Access-Control-Allow-Origin", origin);
-            }
-        }
+            throws IOException {
+                responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
     }
 
 }
