@@ -62,7 +62,7 @@ public class JavaZoneWebApiApplication extends Application<JavaZoneWebApiConfigu
         final EmsAdapter emsAdapter = new EmsAdapter(emsHost);
         String devNull = getDevNull(configuration);
         LOG.info("Bruker /devnull/: " + devNull);
-        DevNullUriCreator devNullUriCreator = new DevNullUriCreator(devNull + "/server/events");
+        DevNullUriCreator devNullUriCreator = new DevNullUriCreator(devNull + "/events");
 
         SpeakerImageCache speakerImageCache = new SpeakerImageCache();
         final SessionRepository sessionRepository = new SessionRepository(emsAdapter, speakerImageCache);
