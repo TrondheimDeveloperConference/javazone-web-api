@@ -1,9 +1,6 @@
 package no.javazone.sessions;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,5 +29,19 @@ public class Event {
 
     public Optional<Session> findSessionById(SessionId sessionId) {
         return Optional.ofNullable(sessions.get(sessionId));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(slug, event.slug) &&
+                Objects.equals(sessions, event.sessions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(slug, sessions);
     }
 }

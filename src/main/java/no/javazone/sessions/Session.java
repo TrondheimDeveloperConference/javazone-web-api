@@ -2,6 +2,7 @@ package no.javazone.sessions;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Session {
@@ -105,5 +106,31 @@ public class Session {
 
     public EmsIds getEmsIds() {
         return emsIds;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return Objects.equals(id, session.id) &&
+                Objects.equals(tittel, session.tittel) &&
+                Objects.equals(format, session.format) &&
+                Objects.equals(slot, session.slot) &&
+                Objects.equals(foredragsholdere, session.foredragsholdere) &&
+                Objects.equals(sprak, session.sprak) &&
+                Objects.equals(niva, session.niva) &&
+                Objects.equals(oppsummering, session.oppsummering) &&
+                Objects.equals(beskrivelse, session.beskrivelse) &&
+                Objects.equals(videoUri, session.videoUri) &&
+                Objects.equals(rom, session.rom) &&
+                Objects.equals(nokkelord, session.nokkelord) &&
+                Objects.equals(tiltenktPublikum, session.tiltenktPublikum) &&
+                Objects.equals(emsIds, session.emsIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, tittel, format, slot, foredragsholdere, sprak, niva, oppsummering, beskrivelse, videoUri, rom, nokkelord, tiltenktPublikum, emsIds);
     }
 }

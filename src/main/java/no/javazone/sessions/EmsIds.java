@@ -1,5 +1,6 @@
 package no.javazone.sessions;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class EmsIds {
@@ -20,4 +21,17 @@ public class EmsIds {
         return sessionId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmsIds emsIds = (EmsIds) o;
+        return Objects.equals(eventId, emsIds.eventId) &&
+                Objects.equals(sessionId, emsIds.sessionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId, sessionId);
+    }
 }

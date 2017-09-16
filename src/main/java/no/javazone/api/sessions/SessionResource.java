@@ -38,24 +38,39 @@ public class SessionResource {
 
     @GET
     @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.MINUTES)
-    public Response getSessions(@PathParam("eventId") String eventSlug, @HeaderParam("X-Forwarded-Proto") String forwardedProto) {
+    public Response getSessions(Request request,
+                                @PathParam("eventId") String eventSlug,
+                                @HeaderParam("X-Forwarded-Proto") String forwardedProto) {
         Optional<Event> eventOptional = sessionRepository.getSessions(eventSlug);
         URI contextRoot = resolveContextRoot(forwardedProto);
 
         return eventOptional
-            .map(x -> SessionDTOMapper.toSessionDTOs(
-                    x,
-                    pathResolver.path(uriInfo),
-                    contextRoot,
-                    devNullUriCreator))
-            .map(x -> Response.ok().entity(x).build())
-            .orElse(errorResponse("Event not found"));
+                .map(x -> {
+                    EntityTag entityTag = new EntityTag(String.valueOf(x.hashCode()));
+                    Response.ResponseBuilder rb = request
+                            .evaluatePreconditions(entityTag);
+                    if(rb != null) {
+                        return rb.build();
+                    } else {
+                        return Response.ok()
+                                .entity(SessionDTOMapper.toSessionDTOs(
+                                        x,
+                                        pathResolver.path(uriInfo),
+                                        contextRoot,
+                                        devNullUriCreator))
+                                .tag(entityTag)
+                                .build();
+                    }
+
+                })
+                .orElse(errorResponse("Event not found"));
     }
 
     @GET
     @Path("/{sessionId}")
     @CacheControl(maxAge = 5, maxAgeUnit = TimeUnit.MINUTES)
     public Response getSession(
+            Request request,
             @PathParam("eventId") String eventSlug,
             @PathParam("sessionId") String sessionId,
             @HeaderParam("X-Forwarded-Proto") String forwardedProto
@@ -63,9 +78,20 @@ public class SessionResource {
         Optional<Session> sessionOptional = sessionRepository.getSession(eventSlug, new SessionId(sessionId));
         URI contextRoot = resolveContextRoot(forwardedProto);
         return sessionOptional
-                .map(session -> SessionDetaljerDTOMapper
-                        .toSessionDetaljerDTO(session, contextRoot, devNullUriCreator))
-                .map(x -> Response.ok().entity(x).build())
+                .map(session -> {
+                    EntityTag entityTag = new EntityTag(String.valueOf(session.hashCode()));
+                    Response.ResponseBuilder rb = request
+                            .evaluatePreconditions(entityTag);
+                    if(rb != null) {
+                        return rb.build();
+                    } else {
+                        return Response.ok()
+                                .entity(SessionDetaljerDTOMapper
+                                        .toSessionDetaljerDTO(session, contextRoot, devNullUriCreator))
+                                .tag(entityTag)
+                                .build();
+                    }
+                })
                 .orElse(errorResponse("Session not found"));
     }
 

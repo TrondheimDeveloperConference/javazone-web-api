@@ -1,6 +1,7 @@
 package no.javazone.sessions;
 
 import java.net.URI;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Foredragsholder {
@@ -43,4 +44,20 @@ public class Foredragsholder {
         return Optional.ofNullable(gravatarUri);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Foredragsholder that = (Foredragsholder) o;
+        return Objects.equals(speakerId, that.speakerId) &&
+                Objects.equals(navn, that.navn) &&
+                Objects.equals(bio, that.bio) &&
+                Objects.equals(gravatarUri, that.gravatarUri) &&
+                Objects.equals(photoUri, that.photoUri);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(speakerId, navn, bio, gravatarUri, photoUri);
+    }
 }
